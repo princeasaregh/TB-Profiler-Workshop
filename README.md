@@ -1,2 +1,333 @@
 # TB-Profiler-Workshop
-Hands-on TB-Profiler workshop materials for genomic drug resistance prediction, lineage assignment, surveillance and bioinformatics training.
+A hands-on TB-Profiler workshop materials for genomic drug resistance prediction, lineage assignment, surveillance and bioinformatics training on *Mycobacterium tuberculosis*.
+
+---
+
+## Learning Objectives
+
+By the end of this workshop participants will be able to:
+
+- Install TB-Profiler
+- Download sequencing data from NCBI/ENA
+- Run TB-Profiler on WGS datasets
+- Interpret lineage assignments
+- Interpret drug resistance predictions
+- Understand WHO confidence categories
+- Generate summary reports
+- Perform batch analyses
+
+---
+
+# 1. System Requirements
+
+| Component | Minimum | Recommended |
+|------------|------------|------------|
+| RAM | 8 GB | 16 GB+ |
+| Disk Space | 50 GB | 100 GB+ |
+| Internet | Stable | High Speed |
+| OS | Windows/Linux/macOS | Latest Version |
+
+---
+
+# 2. Installation Guide
+
+## 2.1 Windows Users
+
+Install WSL:
+
+```bash
+wsl --install
+```
+
+Restart your computer.
+
+Verify:
+
+```bash
+wsl --status
+```
+
+---
+
+## 2.2 Install Miniforge (Recommended)
+
+Download:
+
+```bash
+wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+```
+
+Install:
+
+```bash
+bash Miniforge3-Linux-x86_64.sh
+```
+
+Configure channels:
+
+```bash
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+```
+
+---
+
+## 2.3 Install Mamba if you already have miniconda and are not willing to install miniforge from above 
+
+```bash
+conda install -n base -c conda-forge mamba
+```
+
+---
+
+## 2.4 Install TB-Profiler
+
+Create environment:
+
+```bash
+mamba create -n tbprofiler -c conda-forge -c bioconda tb-profiler
+```
+
+Activate:
+
+```bash
+conda activate tbprofiler
+```
+
+Verify:
+
+```bash
+tb-profiler --help
+```
+
+Update database:
+
+```bash
+tb-profiler update_tbdb
+```
+
+Deactivate tbprofiler:
+
+```bash
+mamba deactivate tbprofiler
+```
+
+---
+
+## 2.5 Install SRA Tools
+
+Create Environment:
+
+```bash
+mamba create -n sra -c bioconda sra-tools pigz parallel
+```
+
+Activate:
+
+```bash
+mamba activate sra
+```
+
+Verify:
+
+```bash
+fasterq-dump --help
+```
+
+---
+
+# 3. Download Example Genomes
+
+Create file:
+
+samples.txt
+
+Example:
+
+```text
+ERR2704679
+ERR5987300
+ERR6362078
+```
+
+Create directory:
+
+```bash
+mkdir fastq
+```
+
+Download:
+
+```bash
+cat samples.txt | parallel -j 10 \
+'fasterq-dump {} --split-files --threads 4 -O fastq/'
+```
+
+Compress:
+
+```bash
+pigz fastq/*.fastq
+```
+
+Deactivate sra:
+
+```bash
+mamba deactivate sra
+```
+
+---
+
+# 4. Run TB-Profiler
+
+Create results folder:
+
+```bash
+mkdir tbprofiler_results
+```
+
+Activate TB-Profiler:
+
+```bash
+mamba activate tbprofiler
+```
+
+## 4.1 Run TB-Profiler on 1 sample
+
+```bash
+tb-profiler profile \
+-1 fastq/ERR5987300_1.fastq.gz \
+-2 fastq/ERR5987300_2.fastq.gz \
+-p ERR5987300 \
+--csv \
+--txt \
+--dir tbprofiler_results/
+```
+
+---
+
+## 4.2 Run TB-Profiler on Multiple Samples Using Batch Analysis
+
+### 4.2.1 First create a Sample Sheet from the downloaded FASTQ Files
+
+Bash Method:
+
+```bash
+echo "id,read1,read2" > samplesheet.csv
+
+for i in fastq/*_1.fastq.gz
+do
+sample=${i%_1.fastq.gz}
+echo "$sample,$(readlink -f $i),$(readlink -f ${sample}_2.fastq.gz)" >> samplesheet.csv
+done
+```
+
+Python Method. Download the python script here:
+
+```bash
+python3 fastq_dir_to_samplesheet.py ./fastq samplesheet.csv
+```
+
+Run batch TB-Profiler:
+
+```bash
+tb-profiler batch \
+--csv samplesheet.csv \
+--jobs 4 \
+--threads_per_job 8 \
+--dir tbprofiler_results/
+```
+
+---
+
+# 5 Summarize TB-Profiler Results
+
+## 5.1 Create summary directory and navigate into it.
+
+```bash
+cd tbprofiler_results
+mkdir summary
+cd summary
+```
+
+## 5.2 Simple summary:
+
+```bash
+tb-profiler collate \
+--prefix tbprofiler_collate \
+--dir ../
+```
+
+## 5.3 Extended summary:
+
+```bash
+tb-profiler collate \
+--prefix tbprofiler_collate_full \
+--dir ../ \
+--full \
+--all_variants \
+--mark_missing
+```
+
+### 5.4 Generate iTOL Files
+
+```bash
+tb-profiler collate --itol
+```
+
+---
+
+# 6. Common Problems
+
+`Command not found`
+
+Restart terminal and reactivate environment.
+conda activate tbprofiler
+
+`Conda not recognized`
+
+Restart terminal after installation.
+
+`WSL installation fails`
+
+Ensure virtualization is enabled in BIOS.
+
+`Out of disk space`
+
+Remove unnecessary files and ensure >50 GB free space.
+
+---
+
+# 7. What to Bring to the Workshop
+
+•	Laptop with or without completed installation
+•	Administrator access to your computer
+•	Charger and power adapter
+•	Stable internet connection
+•	Example FASTQ files (if available)
+
+---
+
+# 8. Expected Outcome
+Before arriving at the workshop, every participant should be able to run:
+tb-profiler --help
+without errors.
+
+---
+
+# 9. Useful Links
+
+- TB-Profiler Documentation: https://jodyphelan.github.io/tb-profiler-docs/
+- TB-Profiler GitHub: https://github.com/jodyphelan/TBProfiler
+- Bioconda: https://bioconda.github.io/
+- Conda Forge: https://conda-forge.org/
+
+---
+
+# 10. Instructor
+
+Dr. Prince Asare  
+Department of Bacteriology  
+Noguchi Memorial Institute for Medical Research, COllege of Health Sciences, 
+University of Ghana
