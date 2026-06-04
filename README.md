@@ -1,6 +1,8 @@
 # TB-Profiler-Workshop
 A hands-on TB-Profiler workshop materials for genomic drug resistance prediction, lineage assignment, surveillance and bioinformatics training on *Mycobacterium tuberculosis*.
 
+- This training material was first developed for the PANGenS consortium https://pangens.org/ 
+  
 ---
 
 ## Learning Objectives
@@ -329,5 +331,5 @@ without errors.
 
 Dr. Prince Asare  
 Department of Bacteriology  
-Noguchi Memorial Institute for Medical Research, COllege of Health Sciences, 
+Noguchi Memorial Institute for Medical Research, College of Health Sciences, 
 University of Ghana
