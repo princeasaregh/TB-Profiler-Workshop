@@ -20,6 +20,13 @@ By the end of this workshop participants will be able to:
 
 ---
 
+## Overview
+To maximize hands-on training time during the workshop, all participants are requested to complete the software installation steps before the training session.
+
+Please complete the installation at least 2–3 days before the workshop so that any issues can be resolved in advance.
+
+---
+
 # 1. System Requirements
 
 | Component | Minimum | Recommended |
@@ -29,6 +36,12 @@ By the end of this workshop participants will be able to:
 | Internet | Stable | High Speed |
 | OS | Windows/Linux/macOS | Latest Version |
 
+## Important Notes
+- Administrative privileges may be required for software installation.
+- Ensure your computer can remain connected to the internet during installation.
+- Windows users should install WSL (Windows Subsystem for Linux).
+- Linux and macOS users may proceed directly to Section 2.2.
+
 ---
 
 # 2. Installation Guide
@@ -37,17 +50,38 @@ By the end of this workshop participants will be able to:
 
 Install WSL:
 
+Open PowerShell as Administrator and copy past the command below. Hit the enter key to run the command.
+
 ```bash
 wsl --install
 ```
 
+This will automatically install:
+- Windows Subsystem for Linux
+- Ubuntu Linux
+- Required virtualization components
+
+
 Restart your computer.
+
+A restart is required after installation.
+
+aunch Ubuntu:
+
+Open Ubuntu from the Start Menu.
+You will be prompted to create:
+- Linux username
+- Linux password
+Keep these credentials safe.
+
 
 Verify:
 
 ```bash
 wsl --status
 ```
+
+You should see information indicating that WSL has been installed successfully.
 
 ---
 
@@ -64,6 +98,19 @@ Install:
 ```bash
 bash Miniforge3-Linux-x86_64.sh
 ```
+
+Accept the default options and answer:
+yes
+when prompted.
+
+Restart Terminal
+
+```bash
+exit
+```
+
+Open a new terminal.
+
 
 Configure channels:
 
