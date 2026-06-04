@@ -301,11 +301,11 @@ Remove unnecessary files and ensure >50 GB free space.
 
 # 7. What to Bring to the Workshop
 
-•	Laptop with or without completed installation
-•	Administrator access to your computer
-•	Charger and power adapter
-•	Stable internet connection
-•	Example FASTQ files (if available)
+- Laptop with or without completed installation
+- Administrator access to your computer
+- Charger and power adapter
+- Stable internet connection
+- Example FASTQ files (if available)
 
 ---
 
