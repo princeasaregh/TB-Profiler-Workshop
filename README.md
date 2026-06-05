@@ -294,11 +294,6 @@ echo "$sample,$(readlink -f $i),$(readlink -f ${sample}_2.fastq.gz)" >> samplesh
 done
 ```
 
-Python Method. Download the python script here:
-
-```bash
-python3 fastq_dir_to_samplesheet.py ./fastq samplesheet.csv
-```
 
 Run batch TB-Profiler:
 
