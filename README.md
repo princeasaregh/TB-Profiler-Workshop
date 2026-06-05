@@ -245,7 +245,7 @@ pigz fastq/*.fastq
 Deactivate sra:
 
 ```bash
-mamba deactivate sra
+mamba deactivate
 ```
 
 ---
