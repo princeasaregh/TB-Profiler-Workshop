@@ -148,7 +148,7 @@ conda activate tbprofiler
 Verify:
 
 ```bash
-tb-profiler --help
+tb-profiler
 ```
 
 Update database:
@@ -157,15 +157,37 @@ Update database:
 tb-profiler update_tbdb
 ```
 
+You can check the version of the database with the below command:
+
+```bash
+tb-profiler list_db
+```
+
 Deactivate tbprofiler:
 
 ```bash
-mamba deactivate tbprofiler
+mamba deactivate
 ```
 
 ---
 
-## 2.5 Install SRA Tools
+## 2.5 Navigate to your working directory/folder
+
+### Navigate to your “Documents” folder and start working.
+#### Replace “<insert-pc-user-name>” with your pc name or user name.
+
+```bash
+cd /mnt/c/Users/<insert-pc-user-name>/Documents/
+```
+
+#### Once in your Documents folder, make/create a directory/folder called “tbdr_profiling” and navigate into that folder
+
+```bash
+mkdir tbdr_profiling
+cd tbdr_profiling
+```
+
+## 2.6 Install SRA Tools
 
 Create Environment:
 
