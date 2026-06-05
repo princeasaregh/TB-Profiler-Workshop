@@ -66,7 +66,7 @@ Restart your computer.
 
 A restart is required after installation.
 
-aunch Ubuntu:
+Launch Ubuntu:
 
 Open Ubuntu from the Start Menu.
 You will be prompted to create:
