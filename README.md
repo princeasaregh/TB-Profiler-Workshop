@@ -220,7 +220,7 @@ Example:
 ```text
 ERR2704679
 ERR5987300
-ERR6362078
+ERR2704678
 ```
 
 Create directory:
