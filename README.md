@@ -283,22 +283,16 @@ tb-profiler profile \
 
 ### 4.2.1 First create a Sample Sheet from the downloaded FASTQ Files
 
-Bash Method:
+#### Bash Method
 
-#### Create the "samplesheet.csv' file and add the header
-
-```bash
-echo "id,read1,read2" > samplesheet.csv
-```
-
-#### Add sample information to the samplesheet.txt file
+Create the "samplesheet.csv" file, add the header and add sample information to the samplesheet.txt file:
 
 ```bash
-for i in fastq/*_1.fastq.gz
-do
+echo "id,read1,read2" > samplesheet.csv && \
+for i in fastq/*_1.fastq.gz; do
     id=$(basename "$i" _1.fastq.gz)
-    echo "$id,$(readlink -f $i),$(readlink -f fastq/${id}_2.fastq.gz)" >> samplesheet.csv
-done
+    echo "$id,$(readlink -f "$i"),$(readlink -f "fastq/${id}_2.fastq.gz")"
+done >> samplesheet.csv
 ```
 
 Run batch TB-Profiler:
