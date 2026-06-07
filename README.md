@@ -174,10 +174,10 @@ mamba deactivate
 ## 2.5 Navigate to your working directory/folder
 
 ### Navigate to your “Documents” folder and start working.
-#### Replace <insert-pc-user-name> with your pc name or user name. This is for only Windows users who installed 'wsl'. For Mac and Linuc users, you may locate your "Documents" folder normally.
+#### Replace "insert-pc-user-name" with your pc name or user name. This is for only Windows users who installed 'wsl'. For Mac and Linuc users, you may locate your "Documents" folder normally.
 
 ```bash
-cd /mnt/c/Users/<insert-pc-user-name>/Documents/
+cd /mnt/c/Users/insert-pc-user-name/Documents/
 ```
 
 #### Once in your Documents folder, make/create a directory/folder called “tbdr_profiling” and navigate into that folder
