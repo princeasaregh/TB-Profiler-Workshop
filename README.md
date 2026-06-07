@@ -285,16 +285,21 @@ tb-profiler profile \
 
 Bash Method:
 
+# Create the "samplesheet.csv' file and add the header
+
 ```bash
 echo "id,read1,read2" > samplesheet.csv
-
-for i in fastq/*_1.fastq.gz
-do
-sample=${i%_1.fastq.gz}
-echo "$sample,$(readlink -f $i),$(readlink -f ${sample}_2.fastq.gz)" >> samplesheet.csv
-done
 ```
 
+# Add sample information to the samplesheet.txt file
+
+```bash
+for i in fastq/*_1.fastq.gz
+do
+    id=$(basename "$i" _1.fastq.gz)
+    echo "$id,$(readlink -f $i),$(readlink -f fastq/${id}_2.fastq.gz)" >> samplesheet.csv
+done
+```
 
 Run batch TB-Profiler:
 
