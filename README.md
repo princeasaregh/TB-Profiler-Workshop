@@ -285,13 +285,13 @@ tb-profiler profile \
 
 Bash Method:
 
-# Create the "samplesheet.csv' file and add the header
+#### Create the "samplesheet.csv' file and add the header
 
 ```bash
 echo "id,read1,read2" > samplesheet.csv
 ```
 
-# Add sample information to the samplesheet.txt file
+#### Add sample information to the samplesheet.txt file
 
 ```bash
 for i in fastq/*_1.fastq.gz
