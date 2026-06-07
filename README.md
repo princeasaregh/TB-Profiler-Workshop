@@ -302,7 +302,7 @@ tb-profiler batch \
 --csv samplesheet.csv \
 --jobs 4 \
 --threads_per_job 8 \
---dir tbprofiler_results/
+--dir tbprofiler_results_batch/
 ```
 
 ---
@@ -312,7 +312,7 @@ tb-profiler batch \
 ## 5.1 Create summary directory and navigate into it.
 
 ```bash
-cd tbprofiler_results
+cd tbprofiler_results_batch
 mkdir summary
 cd summary
 ```
