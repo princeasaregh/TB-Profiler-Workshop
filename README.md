@@ -279,9 +279,9 @@ tb-profiler profile \
 
 ---
 
-## 4.2 Run TB-Profiler on Multiple Samples Using Batch Analysis
+## 4.2 Run TB-Profiler on Multiple Samples Using any one of the options below
 
-### 4.2.1 First create a Sample Sheet from the downloaded FASTQ Files
+### First create a Sample Sheet from the downloaded FASTQ Files
 
 #### Bash Method
 
@@ -295,12 +295,35 @@ for i in fastq/*_1.fastq.gz; do
 done >> samplesheet.csv
 ```
 
-Run batch TB-Profiler:
+### 4.2.1 OPTION 1: Run TB-Profiler on Multiple Samples Using a 'for loop'
+
+```bash
+mkdir -p tbprofiler_results_loop
+
+tail -n +2 samplesheet.csv | while IFS=, read id read1 read2
+do
+    echo "Running $id"
+
+    tb-profiler profile \
+    -1 "$read1" \
+    -2 "$read2" \
+    -p "$id" \
+    --csv \
+    --txt \
+    --dir tbprofiler_results_loop
+done
+```
+
+Batch Analysis
+
+
+
+### 4.2.2 OPTION 2: Run TB-Profiler on Multiple Samples Using TB-Profiler 'batch' option
 
 ```bash
 tb-profiler batch \
 --csv samplesheet.csv \
---jobs 4 \
+--jobs 1 \
 --threads_per_job 8 \
 --dir tbprofiler_results_batch/
 ```
@@ -309,37 +332,17 @@ tb-profiler batch \
 
 # 5 Summarize TB-Profiler Results
 
-## 5.1 Create summary directory and navigate into it.
-
-```bash
-cd tbprofiler_results_batch
-mkdir summary
-cd summary
-```
-
-## 5.2 Simple summary:
+## Generate summary tables and iTOL annotation files
+NB. For the command below, change "tbprofiler_results_batch" to "tbprofiler_results_loop" if you used the "loop" option in the previous command.
 
 ```bash
 tb-profiler collate \
+--dir tbprofiler_results_batch/results \
 --prefix tbprofiler_collate \
---dir ../
-```
-
-## 5.3 Extended summary:
-
-```bash
-tb-profiler collate \
---prefix tbprofiler_collate_full \
---dir ../ \
 --full \
 --all_variants \
---mark_missing
-```
-
-### 5.4 Generate iTOL Files
-
-```bash
-tb-profiler collate --itol
+--mark_missing \
+--itol
 ```
 
 ---
