@@ -283,10 +283,11 @@ tb-profiler profile \
 
 ### First create a Sample Sheet from the downloaded FASTQ Files
 
-#### Bash Method
+#### Bash Method. Use Option 1 if all your reads are paired else use option 2.
 
-Create the "samplesheet.csv" file, add the header and add sample information to the samplesheet.txt file:
+Create the "samplesheet.csv" file, add the header and add sample information to the samplesheet.csv file:
 
+Option 1
 ```bash
 echo "id,read1,read2" > samplesheet.csv && \
 for i in fastq/*_1.fastq.gz; do
@@ -295,28 +296,71 @@ for i in fastq/*_1.fastq.gz; do
 done >> samplesheet.csv
 ```
 
-### 4.2.1 OPTION 1: Run TB-Profiler on Multiple Samples Using a 'for loop'
+Option 2
+```bash
+echo "id,read1,read2" > samplesheet.csv
+
+for i in fastq/*.fastq.gz
+do
+    filename=$(basename "$i")
+
+    [[ "$filename" =~ _2.fastq.gz$ ]] && continue
+
+    if [[ "$filename" =~ _1.fastq.gz$ ]]; then
+        id=${filename%_1.fastq.gz}
+        read1=$(readlink -f "$i")
+
+        if [ -f "fastq/${id}_2.fastq.gz" ]; then
+            read2=$(readlink -f "fastq/${id}_2.fastq.gz")
+        else
+            read2=""
+        fi
+
+    else
+        id=${filename%.fastq.gz}
+        read1=$(readlink -f "$i")
+        read2=""
+    fi
+
+    echo "$id,$read1,$read2" >> samplesheet.csv
+done
+```
+
+### 4.2.1 OPTION 1: Run TB-Profiler on Multiple Samples Using a 'for loop'. NB. This loop version works well for genomes consisting of both paired end and single end reads.
 
 ```bash
 mkdir -p tbprofiler_results_loop
 
 tail -n +2 samplesheet.csv | while IFS=, read id read1 read2
 do
-    echo "Running $id"
+    echo "Running sample: $id"
 
-    tb-profiler profile \
-    -1 "$read1" \
-    -2 "$read2" \
-    -p "$id" \
-    --csv \
-    --txt \
-    --dir tbprofiler_results_loop
+    if [ -n "$read2" ] && [ -f "$read2" ]; then
+        echo "Detected paired-end reads"
+
+        tb-profiler profile \
+        -1 "$read1" \
+        -2 "$read2" \
+        -p "$id" \
+        --csv \
+        --txt \
+        --dir tbprofiler_results_mixed
+
+    else
+        echo "Detected single-end reads"
+
+        tb-profiler profile \
+        -1 "$read1" \
+        -p "$id" \
+        --csv \
+        --txt \
+        --dir tbprofiler_results_mixed
+    fi
+
 done
 ```
 
 Batch Analysis
-
-
 
 ### 4.2.2 OPTION 2: Run TB-Profiler on Multiple Samples Using TB-Profiler 'batch' option
 
