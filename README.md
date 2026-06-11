@@ -333,7 +333,10 @@ mkdir -p tbprofiler_results_loop
 
 tail -n +2 samplesheet.csv | while IFS=, read id read1 read2
 do
+    echo "======================================"
     echo "Running sample: $id"
+    echo "Read 1: $read1"
+    echo "Read 2: $read2"
 
     if [ -n "$read2" ] && [ -f "$read2" ]; then
         echo "Detected paired-end reads"
@@ -344,7 +347,7 @@ do
         -p "$id" \
         --csv \
         --txt \
-        --dir tbprofiler_results_mixed
+        --dir tbprofiler_results_loop
 
     else
         echo "Detected single-end reads"
@@ -354,7 +357,7 @@ do
         -p "$id" \
         --csv \
         --txt \
-        --dir tbprofiler_results_mixed
+        --dir tbprofiler_results_loop
     fi
 
 done
@@ -362,7 +365,7 @@ done
 
 Batch Analysis
 
-### 4.2.2 OPTION 2: Run TB-Profiler on Multiple Samples Using TB-Profiler 'batch' option
+### 4.2.2 OPTION 2: Run TB-Profiler on Multiple Samples Using TB-Profiler 'batch' option. NB. This will only not work well for dataset that contains both singel end and paired end reads.
 
 ```bash
 tb-profiler batch \
@@ -377,11 +380,11 @@ tb-profiler batch \
 # 5 Summarize TB-Profiler Results
 
 ## Generate summary tables and iTOL annotation files
-NB. For the command below, change "tbprofiler_results_batch" to "tbprofiler_results_loop" if you used the "loop" option in the previous command.
+NB. For the command below, change "tbprofiler_results_loop" to "tbprofiler_results_batch" if you used the "batch" option in the previous command.
 
 ```bash
 tb-profiler collate \
---dir tbprofiler_results_batch/results \
+--dir tbprofiler_results_loop/results \
 --prefix tbprofiler_collate \
 --full \
 --all_variants \
